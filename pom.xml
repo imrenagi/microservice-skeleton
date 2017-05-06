@@ -6,7 +6,15 @@
 
     <groupId>com.imrenagi</groupId>
     <artifactId>mysmartwallet</artifactId>
+    <packaging>pom</packaging>
     <version>0.1.0</version>
+    <modules>
+        <module>config</module>
+        <module>registry</module>
+        <module>gateway</module>
+        <module>monitoring</module>
+        <module>service-account</module>
+    </modules>
 
 
 </project>
