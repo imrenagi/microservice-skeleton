@@ -1,6 +1,7 @@
 package com.imrenagi.service_account.controllers;
 
-import com.imrenagi.service_account.domains.Time;
+import com.imrenagi.service_account.domains.*;
+import com.imrenagi.service_account.domains.Number;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,12 @@ public class TestingController {
     @ResponseBody
     public ResponseEntity<Time> getTime() {
         return new ResponseEntity<>(new Time(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/number", produces = "application/json", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Number> getNumber() {
+        return new ResponseEntity<Number>(new Number(), HttpStatus.OK);
     }
 
 }
