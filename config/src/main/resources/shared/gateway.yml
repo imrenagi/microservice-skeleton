@@ -17,11 +17,17 @@ zuul:
     socket-timeout-millis: 20000
 
   routes:
+    service-auth:
+      path: /uaa/**
+      url: http://service-auth:5000
+      stripPrefix: false
+      sensitiveHeaders:
+
     service-account:
-        path: /accounts/**
-        serviceId: service-account
-        stripPrefix: false
-        sensitiveHeaders:
+      path: /accounts/**
+      serviceId: service-account
+      stripPrefix: false
+      sensitiveHeaders:
 
 server:
   port: 4000
