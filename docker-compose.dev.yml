@@ -15,15 +15,10 @@ services:
   gateway:
     build: gateway
 
-  account-service:
-    build: account-service
+  service-account:
+    build: service-account
     ports:
       - 6000:6000
-
-  account-mongodb:
-    build: mongodb
-    ports:
-      - 26000:27017
 
   monitoring:
     build: monitoring
