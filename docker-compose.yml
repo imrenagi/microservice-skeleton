@@ -12,7 +12,7 @@ services:
 
   config:
     environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+      CONFIG_SERVICE_PASSWORD: $MSW_CONFIG_SERVICE_PASSWORD
     image: imrenagi/mysmartwallet-config
     restart: always
     logging:
@@ -22,7 +22,7 @@ services:
 
   registry:
     environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+      CONFIG_SERVICE_PASSWORD: $MSW_CONFIG_SERVICE_PASSWORD
     image: imrenagi/mysmartwallet-registry
     restart: always
     ports:
@@ -34,7 +34,7 @@ services:
 
   gateway:
     environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+      CONFIG_SERVICE_PASSWORD: $MSW_CONFIG_SERVICE_PASSWORD
     image: imrenagi/mysmartwallet-gateway
     restart: always
     ports:
@@ -46,7 +46,7 @@ services:
 
   monitoring:
     environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+      CONFIG_SERVICE_PASSWORD: $MSW_CONFIG_SERVICE_PASSWORD
     image: imrenagi/mysmartwallet-monitoring
     restart: always
     ports:
@@ -59,11 +59,26 @@ services:
 
   service-account:
     environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-#      ACCOUNT_SERVICE_PASSWORD: $ACCOUNT_SERVICE_PASSWORD
-#      MONGODB_PASSWORD: $MONGODB_PASSWORD
+      CONFIG_SERVICE_PASSWORD: $MSW_CONFIG_SERVICE_PASSWORD
+      SERVICE_ACCOUNT_DB_USER: $MSW_DB_USER
+      SERVICE_ACCOUNT_DB_PASSWORD: $MSW_DB_PASSWORD
     image: imrenagi/mysmartwallet-service-account
     restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  service-account-db:
+    image: mysql
+    container_name: mysmartwallet-account-db
+    environment:
+      - MYSQL_DATABASE=account
+      - MYSQL_ROOT_PASSWORD=$MSW_ROOT_PASSWORD
+      - MYSQL_USER=$MSW_DB_USER
+      - MYSQL_PASSWORD=$MSW_DB_PASSWORD
+    ports:
+      - "3306:3306"
     logging:
       options:
         max-size: "10m"
