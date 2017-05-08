@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS accounts (
   id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
@@ -8,4 +8,4 @@ CREATE TABLE IF NOT EXISTS users (
   deleted_at TIMESTAMP NULL
 );
 
-CREATE UNIQUE INDEX email_index ON users (email);
+CREATE UNIQUE INDEX email_index ON accounts (email);
