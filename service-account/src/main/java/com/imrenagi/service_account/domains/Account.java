@@ -16,6 +16,7 @@ import java.util.Date;
 public class Account {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     @NotNull
@@ -38,7 +39,7 @@ public class Account {
     @Column(name = "deleted_at")
     private Date deletedAt;
 
-    protected Account() {}
+    public Account() {}
 
     public Account(String firstName, String lastName, String email) {
         this.firstName = firstName;

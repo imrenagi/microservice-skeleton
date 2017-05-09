@@ -3,6 +3,7 @@ package com.imrenagi.service_account.controllers;
 import com.imrenagi.service_account.domains.*;
 import com.imrenagi.service_account.domains.Number;
 import com.imrenagi.service_account.repositories.AccountRepository;
+import com.imrenagi.service_account.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,9 @@ public class AccountController {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private AccountService accountService;
 
     @RequestMapping(value = "/time", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
@@ -53,6 +58,12 @@ public class AccountController {
         });
 
         return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @RequestMapping(path="/", method = RequestMethod.POST)
+    public ResponseEntity<Account> createNewAccount(@Valid @RequestBody User user) {
+        log.info("Create new account -> " + user.getUsername() + " - " + user.getPassword());
+        return new ResponseEntity<Account>(accountService.create(user), HttpStatus.CREATED);
     }
 
 }

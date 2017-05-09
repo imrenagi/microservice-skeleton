@@ -57,11 +57,42 @@ services:
         max-size: "10m"
         max-file: "10"
 
+  service-auth:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $MSW_CONFIG_SERVICE_PASSWORD
+#      NOTIFICATION_SERVICE_PASSWORD: $NOTIFICATION_SERVICE_PASSWORD
+#      STATISTICS_SERVICE_PASSWORD: $STATISTICS_SERVICE_PASSWORD
+      SERVICE_ACCOUNT_PASSWORD: $MSW_SERVICE_ACCOUNT_PASSOWRD
+      SERVICE_AUTH_DB_USER: $MSW_DB_USER
+      SERVICE_AUTH_DB_PASSWORD: $MSW_DB_PASSWORD
+    image: imrenagi/mysmartwallet-service-auth
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  service-auth-db:
+    image: mysql
+    container_name: mysmartwallet-auth-db
+    environment:
+      - MYSQL_DATABASE=auth
+      - MYSQL_ROOT_PASSWORD=$MSW_ROOT_PASSWORD
+      - MYSQL_USER=$MSW_DB_USER
+      - MYSQL_PASSWORD=$MSW_DB_PASSWORD
+    ports:
+      - "3307:3306"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
   service-account:
     environment:
       CONFIG_SERVICE_PASSWORD: $MSW_CONFIG_SERVICE_PASSWORD
       SERVICE_ACCOUNT_DB_USER: $MSW_DB_USER
       SERVICE_ACCOUNT_DB_PASSWORD: $MSW_DB_PASSWORD
+      SERVICE_ACCOUNT_PASSWORD: $MSW_SERVICE_ACCOUNT_PASSOWRD
     image: imrenagi/mysmartwallet-service-account
     restart: always
     logging:

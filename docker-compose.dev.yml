@@ -20,5 +20,10 @@ services:
     ports:
       - 6000:6000
 
+  service-auth:
+    build: service-auth
+    ports:
+      - 5000:5000
+
   monitoring:
     build: monitoring

@@ -1,11 +1,19 @@
-#spring:
-#  data:
-#    mongodb:
-#      host: auth-mongodb
-#      username: user
-#      password: ${MONGODB_PASSWORD}
-#      database: piggymetrics
-#      port: 27017
+spring:
+  datasource:
+    url: jdbc:mysql://service-auth-db/auth
+    username: ${SERVICE_AUTH_DB_USER}
+    password: ${SERVICE_AUTH_DB_PASSWORD}
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 5
+
+flyway:
+  url: jdbc:mysql://service-auth-db:3306/auth
+  user: ${SERVICE_AUTH_DB_USER}
+  password: ${SERVICE_AUTH_DB_PASSWORD}
+  locations: classpath:db/migration
+  enabled: true
 
 server:
   context-path: /uaa
