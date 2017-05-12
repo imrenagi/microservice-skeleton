@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void create(User user) {
 
-        User existing = userRepository.findOne(user.getUsername());
+        User existing = userRepository.findByUsername(user.getUsername());
         Assert.isNull(existing, "user already exist: " + user.getUsername());
 
         String hash = encoder.encode(user.getPassword());

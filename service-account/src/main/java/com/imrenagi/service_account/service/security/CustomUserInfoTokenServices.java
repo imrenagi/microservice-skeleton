@@ -2,6 +2,8 @@ package com.imrenagi.service_account.service.security;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.FixedAuthoritiesExtractor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +31,7 @@ import java.util.*;
 public class CustomUserInfoTokenServices implements ResourceServerTokenServices {
 
     protected final Log logger = LogFactory.getLog(getClass());
+    protected final Logger log = LoggerFactory.getLogger(CustomUserInfoTokenServices.class);
 
     private static final String[] PRINCIPAL_KEYS = new String[] { "user", "username",
             "userid", "user_id", "login", "id", "name" };
@@ -94,6 +97,17 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
     @SuppressWarnings({ "unchecked" })
     private OAuth2Request getRequest(Map<String, Object> map) {
         Map<String, Object> request = (Map<String, Object>) map.get("oauth2Request");
+
+        if (request.containsKey("authorities")) {
+            Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) request.get("authorities");
+            for (GrantedAuthority auth : authorities) {
+                log.info("------ {} ", auth.getAuthority());
+            }
+        } else if (request.containsKey("authority")) {
+            log.info("------------- AUTHORITY ----------------");
+        } else {
+            log.info("------------- THERE IS NO AUTHORITY ---------");
+        }
 
         String clientId = (String) request.get("clientId");
         Set<String> scope = new LinkedHashSet<>(request.containsKey("scope") ?

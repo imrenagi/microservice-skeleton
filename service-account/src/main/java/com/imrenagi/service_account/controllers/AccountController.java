@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
@@ -34,12 +35,15 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+//    @PreAuthorize("#oauth2.hasScope('uix')")
     @RequestMapping(value = "/time", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Time> getTime() {
         return new ResponseEntity<>(new Time(), HttpStatus.OK);
     }
 
+//    @PreAuthorize("#oauth2.hasScope('ui')")
+//    @PreAuthorize("#oauth2.hasRole('ROLE_SUPER_ADMIN')")
     @RequestMapping(value = "/number", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Number> getNumber() {
