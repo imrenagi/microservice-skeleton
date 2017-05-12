@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +65,13 @@ public class AccountController {
     public ResponseEntity<Account> createNewAccount(@Valid @RequestBody User user) {
         log.info("Create new account -> " + user.getUsername() + " - " + user.getPassword());
         return new ResponseEntity<Account>(accountService.create(user), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(path = "/current", method = RequestMethod.GET)
+    public ResponseEntity<Account> getCurrentAccount(Principal principal) {
+        log.info("Name from the principal: " + principal.getName());
+        Account account = accountService.findByEmail(principal.getName());
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
 }

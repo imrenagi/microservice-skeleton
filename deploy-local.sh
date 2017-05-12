@@ -6,6 +6,6 @@ if [ $? -ne 0 ]; then
     exit
 fi
 
-docker-compose stop $1
 ./compile.sh $1
+docker-compose stop $1
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build $1
