@@ -1,7 +1,10 @@
 package com.imrenagi.service_auth.service;
 
 import com.imrenagi.service_auth.domain.User;
+import com.imrenagi.service_auth.domain.UserRole;
 import com.imrenagi.service_auth.repository.UserRepository;
+import com.imrenagi.service_auth.repository.UserRoleRepository;
+import com.imrenagi.service_auth.utils.UserUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +18,13 @@ import org.springframework.util.Assert;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
+    private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserRoleRepository userRoleRepository;
 
     @Override
     public void create(User user) {
@@ -31,8 +36,13 @@ public class UserServiceImpl implements UserService {
         user.setPassword(hash);
         user.setEnabled(true);
 
-        userRepository.save(user);
+        user = userRepository.save(user);
+
+        UserRole userRole = new UserRole(user.getId(), UserUtility.ROLE_USER);
+
+        userRoleRepository.save(userRole);
 
         logger.info("new user has been created {}", user.getUsername());
+
     }
 }

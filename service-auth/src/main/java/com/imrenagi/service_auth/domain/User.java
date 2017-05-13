@@ -122,4 +122,7 @@ public class User implements UserDetails, Serializable {
         return String.format("%s - %s", this.username, this.password);
     }
 
+    public Long getId() {
+        return id;
+    }
 }
