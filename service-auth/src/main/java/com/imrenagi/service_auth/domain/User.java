@@ -1,5 +1,6 @@
 package com.imrenagi.service_auth.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -55,9 +56,11 @@ public class User implements UserDetails, Serializable {
     protected User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, String firstName, String lastName) {
         this.username = username;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public Collection<Role> getRoles() {
@@ -124,5 +127,25 @@ public class User implements UserDetails, Serializable {
 
     public Long getId() {
         return id;
+    }
+
+    @JsonProperty("first_name")
+    public String getFirstName() {
+        return firstName;
+    }
+
+    @JsonProperty("first_name")
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @JsonProperty("last_name")
+    public String getLastName() {
+        return lastName;
+    }
+
+    @JsonProperty("last_name")
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

@@ -42,14 +42,16 @@ public class AccountServiceImpl implements AccountService {
 
         log.info("Trying to create user: " + user.getUsername() + " -> " + user.getPassword());
 
-        authClient.createUser(user);
-
         Account account = new Account();
-        account.setFirstName("first_name");
-        account.setLastName("last_name");
-        account.setEmail(user.getUsername());
+        account.setUsername(user.getUsername());
+        account.setFirstName(user.getFirstName());
+        account.setLastName(user.getLastName());
+        account.setEmail(user.getEmail());
+        account.setAddress(user.getAddress());
+        account.setPhoneNumber(user.getPhoneNumber());
 
-        repository.save(account);
+        account = repository.save(account);
+        authClient.createUser(user);
 
         log.info("New account has been created:" + account.getEmail());
 

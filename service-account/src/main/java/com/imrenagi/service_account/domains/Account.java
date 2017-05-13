@@ -1,6 +1,8 @@
 package com.imrenagi.service_account.domains;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
@@ -20,22 +22,33 @@ public class Account {
     private Long id;
 
     @NotNull
+    @Column(name = "username")
+    private String username;
+
+    @NotNull
     @Column(name = "first_name")
     private String firstName;
 
-    @NotNull
     @Column(name = "last_name")
     private String lastName;
 
     @NotNull
     private String email;
 
+    private String address;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @JsonIgnore
     @Column(name = "created_at")
     private Date createdAt;
 
+    @JsonIgnore
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    @JsonIgnore
     @Column(name = "deleted_at")
     private Date deletedAt;
 
@@ -55,6 +68,7 @@ public class Account {
         this.id = id;
     }
 
+    @JsonProperty("first_name")
     public String getFirstName() {
         return firstName;
     }
@@ -63,6 +77,7 @@ public class Account {
         this.firstName = firstName;
     }
 
+    @JsonProperty("last_name")
     public String getLastName() {
         return lastName;
     }
@@ -77,6 +92,31 @@ public class Account {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @JsonProperty("phone_number")
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Date getCreatedAt() {

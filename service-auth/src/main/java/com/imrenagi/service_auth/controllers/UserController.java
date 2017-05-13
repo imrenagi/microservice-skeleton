@@ -31,8 +31,6 @@ public class UserController {
     @PreAuthorize("#oauth2.hasScope('server')")
     @RequestMapping(method = RequestMethod.POST)
     public void createUser(@Valid @RequestBody User user) {
-        log.info("User object -> " + user.toString());
-        log.info("Trying to create user: " + user.getUsername() + " -> " + user.getPassword());
         userService.create(user);
     }
 

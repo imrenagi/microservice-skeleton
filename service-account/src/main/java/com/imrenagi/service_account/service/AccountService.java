@@ -13,5 +13,4 @@ public interface AccountService {
     Account findByEmail(String email);
 
     Account create(User user);
-
 }

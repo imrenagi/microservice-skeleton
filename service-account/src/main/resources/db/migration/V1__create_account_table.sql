@@ -1,11 +1,15 @@
 CREATE TABLE IF NOT EXISTS accounts (
   id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
   first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50),
   email VARCHAR(255) NOT NULL,
+  address VARCHAR(255),
+  phone_number VARCHAR(20),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   deleted_at TIMESTAMP NULL
 );
 
 CREATE UNIQUE INDEX email_index ON accounts (email);
+CREATE UNIQUE INDEX username ON accounts(username);
