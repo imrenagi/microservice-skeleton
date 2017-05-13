@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.imrenagi</groupId>
-    <artifactId>mysmartwallet</artifactId>
+    <artifactId>microservice-base</artifactId>
     <packaging>pom</packaging>
     <version>0.1.0</version>
     <modules>
