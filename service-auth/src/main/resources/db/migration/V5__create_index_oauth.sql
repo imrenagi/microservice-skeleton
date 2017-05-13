@@ -10,3 +10,5 @@ CREATE INDEX authentication_id_index ON oauth_client_token (authentication_id);
 CREATE INDEX token_id_index ON oauth_refresh_token (token_id);
 
 CREATE INDEX client_id_index ON oauth_client_details(client_id);
+
+CREATE INDEX code_index ON oauth_code (code);
