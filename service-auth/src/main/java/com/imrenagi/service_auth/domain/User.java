@@ -1,15 +1,15 @@
 package com.imrenagi.service_auth.domain;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by imrenagi on 5/8/17.
@@ -66,8 +66,13 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return null;
-        return getGrantedAuthorities(getPrivileges(this.roles));
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        for (Role role : this.roles) {
+            for (Permission privilege : role.getPrivileges()) {
+                authorities.add(new SimpleGrantedAuthority(privilege.getName()));
+            }
+        }
+        return authorities;
     }
 
     @Override
@@ -108,29 +113,13 @@ public class User implements UserDetails, Serializable {
         return this.isEnabled;
     }
 
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
+    }
+
     @Override
     public String toString() {
         return String.format("%s - %s", this.username, this.password);
     }
 
-    public List<String> getPrivileges(Collection<Role> roles) {
-
-        List<String> privileges = new ArrayList<>();
-        List<Permission> collection = new ArrayList<>();
-        for (Role role : roles) {
-            collection.addAll(role.getPrivileges());
-        }
-        for (Permission item : collection) {
-            privileges.add(item.getName());
-        }
-        return privileges;
-    }
-
-    public List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (String privilege : privileges) {
-            authorities.add(new SimpleGrantedAuthority(privilege));
-        }
-        return authorities;
-    }
 }

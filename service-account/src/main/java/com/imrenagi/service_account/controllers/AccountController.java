@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
@@ -35,15 +38,14 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-//    @PreAuthorize("#oauth2.hasScope('uix')")
+    @PreAuthorize("hasAuthority('x')")
     @RequestMapping(value = "/time", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Time> getTime() {
         return new ResponseEntity<>(new Time(), HttpStatus.OK);
     }
 
-//    @PreAuthorize("#oauth2.hasScope('ui')")
-//    @PreAuthorize("#oauth2.hasRole('ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasAuthority('READ_TIMELINE_POST')")
     @RequestMapping(value = "/number", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Number> getNumber() {
@@ -52,9 +54,6 @@ public class AccountController {
 
     @RequestMapping(value = "/", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity<List<Account>> getAccounts() {
-        log.info("API has been called!");
-        log.info("Datasource -> " + dataSource);
-
         List<Account> res = new ArrayList<>();
         Iterable<Account> iterable = accountRepository.findAll();
         iterable.forEach(account -> {
@@ -67,13 +66,11 @@ public class AccountController {
 
     @RequestMapping(path="/", method = RequestMethod.POST)
     public ResponseEntity<Account> createNewAccount(@Valid @RequestBody User user) {
-        log.info("Create new account -> " + user.getUsername() + " - " + user.getPassword());
         return new ResponseEntity<Account>(accountService.create(user), HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "/current", method = RequestMethod.GET)
     public ResponseEntity<Account> getCurrentAccount(Principal principal) {
-        log.info("Name from the principal: " + principal.getName());
         Account account = accountService.findByEmail(principal.getName());
         return new ResponseEntity<>(account, HttpStatus.OK);
     }

@@ -29,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
         String hash = encoder.encode(user.getPassword());
         user.setPassword(hash);
+        user.setEnabled(true);
 
         userRepository.save(user);
 
