@@ -11,21 +11,19 @@ import java.util.Collection;
 @Table(name="roles")
 public class Role implements Serializable {
 
+    private static final long serialVersionUID = 2L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
 
-//    //TODO remove this!!
-//    @ManyToMany(mappedBy = "roles")
-//    private Collection<User> users;
-//
-//    @JoinTable(name = "role_permissions",
-//            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
-//    @ManyToMany
-//    private Collection<Permission> privileges;
+    @JoinTable(name = "role_permissions",
+            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
+    @ManyToMany
+    private Collection<Permission> privileges;
 
     public Long getId() {
         return id;
@@ -43,19 +41,11 @@ public class Role implements Serializable {
         this.name = name;
     }
 
-//    public Collection<User> getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(Collection<User> users) {
-//        this.users = users;
-//    }
-//
-//    public Collection<Permission> getPrivileges() {
-//        return privileges;
-//    }
-//
-//    public void setPrivileges(Collection<Permission> privileges) {
-//        this.privileges = privileges;
-//    }
+    public Collection<Permission> getPrivileges() {
+        return privileges;
+    }
+
+    public void setPrivileges(Collection<Permission> privileges) {
+        this.privileges = privileges;
+    }
 }

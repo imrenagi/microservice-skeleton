@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 /**
  * Created by imrenagi on 5/8/17.
  */
@@ -30,10 +32,9 @@ public class MysqlUserDetailsService implements UserDetailsService {
 
 //        for (Role role : user.getRoles()) {
 //            log.info("{} has {} role", user.getUsername(), role.getName());
-//        }
-
-//        for (GrantedAuthority authority : user.getAuthorities()) {
-//            log.info("{} has {} authority", user.getUsername(), authority.getAuthority());
+//            for (String str : user.getPrivileges(Arrays.asList(role))) {
+//                log.info("role {} has {} authrity", role.getName(), str);
+//            }
 //        }
 
         if (user == null) {

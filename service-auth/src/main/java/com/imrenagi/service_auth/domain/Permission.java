@@ -11,14 +11,13 @@ import java.util.Collection;
 @Table(name="permissions")
 public class Permission implements Serializable {
 
+    private static final long serialVersionUID = 3L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
-
-//    @ManyToMany(mappedBy = "privileges")
-//    private Collection<Role> roles;
 
     public Long getId() {
         return id;
@@ -36,11 +35,5 @@ public class Permission implements Serializable {
         this.name = name;
     }
 
-//    public Collection<Role> getRoles() {
-//        return roles;
-//    }
 
-//    public void setRoles(Collection<Role> roles) {
-//        this.roles = roles;
-//    }
 }

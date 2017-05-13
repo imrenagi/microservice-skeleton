@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -15,7 +16,9 @@ import java.util.List;
  */
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
+
+    private static final long serialVersionUID = 3983129586203287061L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,11 +46,11 @@ public class User implements UserDetails {
     @Column(name = "is_enable")
     private Boolean isEnabled;
 
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "user_roles",
-//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-//    private Collection<Role> roles;
+    @ManyToMany
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
 
     protected User() {
     }
@@ -57,14 +60,14 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-//    public Collection<Role> getRoles() {
-//        return roles;
-//    }
+    public Collection<Role> getRoles() {
+        return roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-        //return getGrantedAuthorities(getPrivileges(this.roles));
+//        return null;
+        return getGrantedAuthorities(getPrivileges(this.roles));
     }
 
     @Override
@@ -110,24 +113,24 @@ public class User implements UserDetails {
         return String.format("%s - %s", this.username, this.password);
     }
 
-//    private List<String> getPrivileges(Collection<Role> roles) {
-//
-//        List<String> privileges = new ArrayList<>();
-//        List<Permission> collection = new ArrayList<>();
-//        for (Role role : roles) {
-//            collection.addAll(role.getPrivileges());
-//        }
-//        for (Permission item : collection) {
-//            privileges.add(item.getName());
-//        }
-//        return privileges;
-//    }
-//
-//    private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//        for (String privilege : privileges) {
-//            authorities.add(new SimpleGrantedAuthority(privilege));
-//        }
-//        return authorities;
-//    }
+    public List<String> getPrivileges(Collection<Role> roles) {
+
+        List<String> privileges = new ArrayList<>();
+        List<Permission> collection = new ArrayList<>();
+        for (Role role : roles) {
+            collection.addAll(role.getPrivileges());
+        }
+        for (Permission item : collection) {
+            privileges.add(item.getName());
+        }
+        return privileges;
+    }
+
+    public List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (String privilege : privileges) {
+            authorities.add(new SimpleGrantedAuthority(privilege));
+        }
+        return authorities;
+    }
 }
