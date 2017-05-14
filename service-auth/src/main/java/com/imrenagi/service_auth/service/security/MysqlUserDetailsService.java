@@ -30,13 +30,6 @@ public class MysqlUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(s);
         log.info("user is found! -> " + user.getUsername());
 
-//        for (Role role : user.getRoles()) {
-//            log.info("{} has {} role", user.getUsername(), role.getName());
-//            for (String str : user.getPrivileges(Arrays.asList(role))) {
-//                log.info("role {} has {} authrity", role.getName(), str);
-//            }
-//        }
-
         if (user == null) {
             log.info("user is not found!");
             throw new UsernameNotFoundException(s);
