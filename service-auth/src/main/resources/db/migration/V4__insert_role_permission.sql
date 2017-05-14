@@ -11,5 +11,5 @@ INSERT INTO permissions (id, name) VALUES (4, "DELETE_USER");
 INSERT INTO role_permissions (role_id, permission_id)
 VALUES (1, 1), (1,2), (1,3), (1,4),
   (2, 1), (2,2), (2,3), (2,4),
-  (3, 1), (3,2), (3,3)
+  (3, 1), (3,2), (3,3),
   (4,1), (4,2);
