@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.List;
+
 /**
  * Created by imrenagi on 5/8/17.
  */
@@ -25,8 +27,9 @@ public class AccountServiceImpl implements AccountService {
     private AuthServiceClient authClient;
 
     @Override
-    public Account findByName(String name) {
-        return null;
+    public Account findByUserName(String username) {
+        Assert.hasLength(username);
+        return repository.findByUsername(username);
     }
 
     @Override
@@ -56,5 +59,10 @@ public class AccountServiceImpl implements AccountService {
         log.info("New account has been created:" + account.getEmail());
 
         return account;
+    }
+
+    @Override
+    public List<Account> findAll() {
+        return repository.findAll();
     }
 }
