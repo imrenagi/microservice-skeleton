@@ -40,7 +40,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account create(User user) {
-        Account existing = repository.findByEmail(user.getUsername());
+        Account existing = repository.findByUsername(user.getUsername());
         Assert.isNull(existing, "account already exist: " + user.getUsername());
 
         log.info("Trying to create user: " + user.getUsername() + " -> " + user.getPassword());
