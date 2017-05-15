@@ -10,7 +10,11 @@ This project is a simple skeleton code for microservice architecture pattern usi
 
 ## Services
 
-By now, the functional services are still decomposed into two core services. Each of them can be tested, built, and deployed independently.
+By now, the functional services are still decomposed into three core services. Each of them can be tested, built, and deployed independently.
+
+![Infrastructure plan](http://res.cloudinary.com/imrenagi-com/image/upload/v1494871114/Untitled_cwhlwy.png)
+
+
 ### Auth service
 Provides several API for user authentication and authorization with OAuth 2.0.
 
@@ -46,6 +50,9 @@ since it provides a simplify HTTP layer service called Feign (discussed later). 
 ## Infrastructure
 Spring Cloud is a really good web framework that we can use for building a microservice infrastructure since it provides 
 broad supporting tools such as Load Balancer, Service registry, Monitoring, and Configuration.
+
+![This image is taken from PiggyMetrics](https://cloud.githubusercontent.com/assets/6069066/13906840/365c0d94-eefa-11e5-90ad-9d74804ca412.png)
+Image source: [PiggyMetrics]https://github.com/sqshq/PiggyMetrics)
 
 ### Config *
 [Spring Cloud Config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) is horizontally scalable centralized configuration service for distributed systems. It uses a pluggable repository layer that currently supports local storage, Git, and Subversion. 
@@ -122,7 +129,7 @@ Client support enabled with `@EnableDiscoveryClient` annotation an `bootstrap.ym
 ``` yml
 spring:
   application:
-    name: account-service
+    name: servuce-account
 ```
 
 Now, on application startup, it will register with Eureka Server and provide meta-data, such as host and port, health indicator URL, home page etc. Eureka receives heartbeat messages from each instance belonging to a service. If the heartbeat fails over a configurable timetable, the instance will be removed from the registry.
