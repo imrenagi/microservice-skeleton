@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface RoleRepository extends CrudRepository<Role, Long> {
-    //TODO need add index in name column
     Role findByName(String name);
 }

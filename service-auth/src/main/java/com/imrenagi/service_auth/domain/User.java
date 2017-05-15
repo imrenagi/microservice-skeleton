@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.*;
 
@@ -25,8 +26,10 @@ public class User implements UserDetails, Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
     private String username;
 
+    @NotNull
     private String password;
 
     @Column(name = "created_at")
@@ -38,6 +41,7 @@ public class User implements UserDetails, Serializable {
     @Column(name = "deleted_at")
     private Date deletedAt;
 
+    @NotNull
     @Column(name = "first_name")
     private String firstName;
 
@@ -45,7 +49,7 @@ public class User implements UserDetails, Serializable {
     private String lastName;
 
     @Column(name = "is_enable")
-    private Boolean isEnabled;
+    private Boolean isEnabled = Boolean.TRUE;
 
     @ManyToMany
     @JoinTable(name = "user_roles",
@@ -53,7 +57,7 @@ public class User implements UserDetails, Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
-    protected User() {
+    public User() {
     }
 
     public User(String username, String password, String firstName, String lastName) {
@@ -63,6 +67,12 @@ public class User implements UserDetails, Serializable {
         this.lastName = lastName;
     }
 
+    public User(String username, String password, String firstName) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+    }
+
     public Collection<Role> getRoles() {
         return roles;
     }
@@ -70,9 +80,11 @@ public class User implements UserDetails, Serializable {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        for (Role role : this.roles) {
-            for (Permission privilege : role.getPrivileges()) {
-                authorities.add(new SimpleGrantedAuthority(privilege.getName()));
+        if (this.roles != null) {
+            for (Role role : this.roles) {
+                for (Permission privilege : role.getPrivileges()) {
+                    authorities.add(new SimpleGrantedAuthority(privilege.getName()));
+                }
             }
         }
         return authorities;

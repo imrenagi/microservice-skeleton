@@ -23,7 +23,9 @@ public class AuthController {
     public void logout(@RequestHeader("Authorization") String auth) {
         if (auth != null) {
             String token = auth.replace("Bearer", "").trim();
-            consumerTokenServices.revokeToken(token);
+            if (!token.isEmpty()) {
+                consumerTokenServices.revokeToken(token);
+            }
         }
     }
 
