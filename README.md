@@ -73,6 +73,42 @@ spring:
       fail-fast: true
 ```
 
+### Auth Service
+
+Authorization responsibilities are completely extracted to separate server, which grants [OAuth2 tokens](https://tools.ietf.org/html/rfc6749) for the backend resource services. Auth Server is used for user authorization as well as for secure machine-to-machine communication inside a perimeter.
+
+This project only uses two type of authorizations, they are [`Password credentials`](https://tools.ietf.org/html/rfc6749#section-4.3) grant type for users authorization and [`Client Credentials`](https://tools.ietf.org/html/rfc6749#section-4.4) grant for microservices authorization.
+
+There are two ways of storing the authorization token granted for users. First, we can us in memory database provided by Spring security oauth2 library. Second, we can use persistent storage such as (MySQL, MongoDB, PostgresSQL, etc) to keep access tokens, refresh tokens and client credentials. In this project, I'm using MySQL database to keep all authorization information along with the database schema that will be executed by flyway. To change the implementation into in-memory database, simply:
+* Comment `@Configuration`, `@EnableAuthorizationServer` and `@EnableWebSecurity` in `JdbcOAuth2Config.java` and `JdbcServerSecurityConfig.java`.
+* Comment out `@Configuration`, `@EnableAuthorizationServer` and `@EnableWebSecurity` in `InMemoryOAuth2Config.java` and `InMemoryWebSecurityConfig.java`
+* Build the program.
+
+Spring Cloud Security provides convenient annotations and autoconfiguration to make this really easy to implement from both server and client side. You can learn more about it in [documentation](http://cloud.spring.io/spring-cloud-security/spring-cloud-security.html) and check configuration details in Auth Server code.
+
+From the client side, everything works exactly the same as with traditional session-based authorization. You can retrieve `Principal` object from request, check user's roles and other stuff with expression-based access control and `@PreAuthorize` annotation.
+
+Each client in this application (service-account, service-auth, and service-notification) has a scope: `server` for backend services, and `ui` - for the browser. So we can also protect controllers from external access, for example:
+
+``` java
+@PreAuthorize("#oauth2.hasScope('server')")
+    @RequestMapping(method = RequestMethod.POST)
+    public void createUser(@Valid @RequestBody User user) {
+        userService.create(user);
+    }
+```
+
+In addition, I also use role and privilege authorization for several endpoints in this project to protect the controller from unauthorized access. To add specific authorization checking, we can use `hasAuthority()` or `hasRole()` as the parameter of the `@PreAuthorize` annotation. For example:
+``` java
+    @PreAuthorize("hasAuthority('READ_BASIC_INFORMATION')")
+    @RequestMapping(path = "/", method = RequestMethod.GET)
+    public ResponseEntity<AccountResponse> getAllAccounts() {
+        AccountResponse response = new AccountResponse();
+        response.accounts = accountService.findAll();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+```
+
 ### Database
 
 I use MySQL for persistent data storage for several services in this application. To help me in doing some database schema migration, I use [Flyway by boxfuse](https://flywaydb.org/) to help me creating all tables and updating the schema. 
