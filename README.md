@@ -52,7 +52,7 @@ Spring Cloud is a really good web framework that we can use for building a micro
 broad supporting tools such as Load Balancer, Service registry, Monitoring, and Configuration.
 
 ![This image is taken from PiggyMetrics](https://cloud.githubusercontent.com/assets/6069066/13906840/365c0d94-eefa-11e5-90ad-9d74804ca412.png)
-Image source: [PiggyMetrics]https://github.com/sqshq/PiggyMetrics)
+Image source: [PiggyMetrics](https://github.com/sqshq/PiggyMetrics)
 
 ### Config *
 [Spring Cloud Config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) is horizontally scalable centralized configuration service for distributed systems. It uses a pluggable repository layer that currently supports local storage, Git, and Subversion. 
