@@ -13,17 +13,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by imrenagi on 5/14/17.
@@ -46,7 +40,7 @@ public class MysqlUserDetailsServiceTest {
 
     @Test
     public void shouldReturnUserDetailWhenAUserIsFound() throws Exception {
-        final User  user = new User("imrenagi", "1234", "imre", "nagi");
+        final User user = new User("imrenagi", "1234", "imre", "nagi");
 
         doReturn(user).when(repository).findByUsername(user.getUsername());
         UserDetails found = userDetailsService.loadUserByUsername(user.getUsername());

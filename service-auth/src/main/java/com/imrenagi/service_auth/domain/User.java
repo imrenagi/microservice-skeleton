@@ -141,6 +141,10 @@ public class User implements UserDetails, Serializable {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @JsonProperty("first_name")
     public String getFirstName() {
         return firstName;
