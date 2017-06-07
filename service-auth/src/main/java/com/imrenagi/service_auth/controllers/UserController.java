@@ -1,5 +1,6 @@
 package com.imrenagi.service_auth.controllers;
 
+import com.imrenagi.service_auth.consumer.GreeterServiceConsumer;
 import com.imrenagi.service_auth.domain.User;
 import com.imrenagi.service_auth.service.UserService;
 import org.slf4j.Logger;
@@ -20,6 +21,9 @@ public class UserController {
 
     private final Logger log = LoggerFactory.getLogger(UserController.class);
 
+//    @Autowired
+    GreeterServiceConsumer consumer = new GreeterServiceConsumer();
+
     @Autowired
     private UserService userService;
 
@@ -31,6 +35,7 @@ public class UserController {
     @PreAuthorize("#oauth2.hasScope('server')")
     @RequestMapping(method = RequestMethod.POST)
     public void createUser(@Valid @RequestBody User user) {
+        consumer.greet("Imre", "Testing Testing");
         userService.create(user);
     }
 

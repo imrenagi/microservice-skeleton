@@ -14,7 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @EnableResourceServer
 @EnableDiscoveryClient
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableEurekaClient
+//@EnableEurekaClient
 public class AuthApplication {
 
     public static void main(String[] args) {

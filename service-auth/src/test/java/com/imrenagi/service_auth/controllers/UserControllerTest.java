@@ -2,6 +2,7 @@ package com.imrenagi.service_auth.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imrenagi.service_auth.AuthApplication;
+import com.imrenagi.service_auth.consumer.GreeterServiceConsumer;
 import com.imrenagi.service_auth.domain.User;
 import com.imrenagi.service_auth.service.UserService;
 import com.sun.security.auth.UserPrincipal;
@@ -40,6 +41,9 @@ public class UserControllerTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private GreeterServiceConsumer consumer;
 
     private MockMvc mockMvc;
 
