@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.imrenagi.protobuf";
+option java_outer_classname = "GreetingProto";
+option objc_class_prefix = "GT";
+
+package greeting;
+
+service Greeting {
+  rpc SayHi (HelloRequest) returns (HelloReply) {}
+}
+
+message HelloReply {
+    string name = 1;
+    string message = 2;
+}
+
+message HelloRequest {
+    string name = 1;
+    string message = 2;
+}

@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <version>0.1.0</version>
     <modules>
-        <module>protobuf</module>
+        <!--<module>protobuf</module>-->
         <module>config</module>
         <module>registry</module>
         <module>gateway</module>
