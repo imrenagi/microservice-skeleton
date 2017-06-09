@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -43,7 +44,7 @@ public class UserControllerTest {
     private UserService userService;
 
     @Mock
-    private GreeterServiceConsumer consumer;
+    private DiscoveryClient discoveryClient;
 
     private MockMvc mockMvc;
 

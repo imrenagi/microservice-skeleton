@@ -2,7 +2,8 @@ package com.imrenagi.service_auth.consumer;
 
 import com.imrenagi.protobuf.GreetingGrpc;
 import com.imrenagi.protobuf.HelloRequest;
-import com.imrenagi.service_auth.service.UserServiceImpl;
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.slf4j.Logger;
@@ -13,36 +14,46 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * Created by inagi on 6/6/17.
  */
-@EnableEurekaClient
-@Component
+//@Component
 public class GreeterServiceConsumer {
-
-//    @Autowired
-//    private EurekaClient client;
-
-    @Autowired
-    private DiscoveryClient discoveryClient;
 
     private final Logger logger = LoggerFactory.getLogger(GreeterServiceConsumer.class);
 
+    @Autowired
+    private DiscoveryClient discoveryClient;
+//    @Autowired
+//    private EurekaClient client;
+
     public void greet(String name, String message) {
 
-        ServiceInstance server = discoveryClient.getInstances("service-account").get(0);
+        if (discoveryClient == null) {
+            logger.info("Discovery client is null");
+        } else {
+            logger.info("Discovery client is not null");
+            try {
+                List<ServiceInstance> servers = discoveryClient.getInstances("service-account");
 
-        String hostName = server.getHost();
-        int gRpcPort = Integer.parseInt(server.getMetadata().get("grpc.port"));
-        logger.info("=====>> " + hostName + " ---- " + gRpcPort);
+                for (ServiceInstance server : servers) {
+                    String hostName = server.getHost();
+                    int gRpcPort = Integer.parseInt(server.getMetadata().get("grpc.port"));
+                    logger.info("=====>> " + hostName + " ---- " + gRpcPort);
 
-        final ManagedChannel channel = ManagedChannelBuilder.forAddress(hostName, gRpcPort)
-                .usePlaintext(true)
-                .build();
-        final GreetingGrpc.GreetingFutureStub stub = GreetingGrpc.newFutureStub(channel);
+                    final ManagedChannel channel = ManagedChannelBuilder.forAddress(hostName, gRpcPort)
+                            .usePlaintext(true)
+                            .build();
+                    final GreetingGrpc.GreetingFutureStub stub = GreetingGrpc.newFutureStub(channel);
 
-        stub.sayHi(HelloRequest.newBuilder().setName(name).setMessage(message).build());
+                    stub.sayHi(HelloRequest.newBuilder().setName(name).setMessage(message).build());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
-
 
 }
